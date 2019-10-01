@@ -20,6 +20,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css"  href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css" >
 
     <!-- Slider
     ================================================== -->
@@ -35,6 +36,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -739,11 +741,67 @@
                         <div class="clearfix"></div>
                         <em>Puedes preguntarnos por email o WhatsApp</em>
                     </div>
-
-
-
                 </div>
             </div>
+			
+			<form id="solicitarReservaForm">
+				<div class="row">
+					<div class="col-md-12">				
+						<!-- DATEPICKER -->
+						<div class="container">
+							<div class='col-md-3'>
+								<div class="form-group">
+									<div class='input-group date' id='reservaEntrada'>
+										<input type='text' class="form-control"  required />
+										<span class="input-group-addon"> Entrada
+											<span class="fa fa-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class='col-md-3'>
+								<div class="form-group">
+									<div class='input-group date' id='reservaSalida'>
+										<input type='text' class="form-control" required />
+										<span class="input-group-addon"> Salida
+											<span class="fa fa-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class='col-md-3'>
+								<div class="form-group">
+									<div class='input-group'>
+										<input type='text' class="form-control" id='reservaNombre' required />
+										<span class="input-group-addon"> Nombre
+											<span class="fa fa-user"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class='col-md-3'>
+								<div class="form-group">
+									<div class='input-group'>
+										<input type='text' class="form-control"  id='reservaTelefono' required />
+										<span class="input-group-addon"> Teléfono
+											<span class="fa fa-phone"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="section-title center">
+							<button class="btn btn-primary" type="submit">Solicitar Reserva</button>
+						</div>
+					</div>
+				</div>
+			</form>
 
         </div>
     </div>
@@ -775,6 +833,37 @@
     <!-- Javascripts
     ================================================== -->
     <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/moment-with-locales.js"></script>
+    <script src="js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript">
+		function enviarEmail(){
+			console.log("mailto:email@echoecho.com?subject=Solicitud Reserva&body=Hola, soy " + $('#reservaNombre').val() + ". Solicito reserva con fecha de entrada " + $('#reservaEntrada').data('date') + " y fecha de salida " + $('#reservaSalida').data('date') + ". Mi teléfono de contacto es " + $('#reservaTelefono').val());
+			location.href="mailto:email@echoecho.com?subject=Solicitud Reserva&body=Hola, soy " + $('#reservaNombre').val() + ". Solicito reserva con fecha de entrada " + $('#reservaEntrada').data('date') + " y fecha de salida " + $('#reservaSalida').data('date') + ". Mi teléfono de contacto es " + $('#reservaTelefono').val();
+
+		}
+		
+		
+		$(function () {
+			$('#reservaEntrada').datetimepicker({format: 'DD/MM/YYYY'});
+			$('#reservaSalida').datetimepicker({
+				useCurrent: false,
+				format: 'DD/MM/YYYY'
+			});
+			$("#reservaEntrada").on("dp.change", function (e) {
+				$('#reservaSalida').data("DateTimePicker").minDate(e.date);
+			});
+			$("#reservaSalida").on("dp.change", function (e) {
+				$('#reservaEntrada').data("DateTimePicker").maxDate(e.date);
+			});
+		});
+		
+		$("#solicitarReservaForm").on("submit", function(e){
+			e.preventDefault();
+			enviarEmail();
+		});
+		
+		
+</script>
 
   </body>
 </html>
